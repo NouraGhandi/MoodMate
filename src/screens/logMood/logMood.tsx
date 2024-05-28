@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import ImageSwiper from "../../componants/sliderComponant";
 import { useAppContext } from "../../context/userContext";
+import { useNavigation } from "@react-navigation/native";
 
 export default function LogMood() {
   const emotions: string[] = [
@@ -29,7 +30,7 @@ export default function LogMood() {
     setSelectedEmotion(emotion);
     setUserMood("emotion", emotion);
   };
-
+  const { navigate } = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -63,9 +64,7 @@ export default function LogMood() {
           <Button
             title="Save"
             color="#fff"
-            onPress={() => {
-              console.log("final", userMood);
-            }}
+            onPress={() => navigate("Home" as never)}
           />
         </View>
       </View>

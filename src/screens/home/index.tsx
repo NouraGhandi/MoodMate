@@ -12,12 +12,17 @@ import { useNavigation } from "@react-navigation/native";
 import { useAppContext } from "../../context/userContext";
 import MoodCard from "../../componants/moodCou";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 export default function Home() {
-  const { navigate } = useNavigation();
-  const date = dayjs(new Date()).format("MMM YYYY");
   const { userMood } = useAppContext();
+  const { navigate } = useNavigation();
+  useEffect(() => {
+    navigate("LogMood" as never);
+  }, [userMood.mood == ""]);
+  const date = dayjs(new Date()).format("MMM YYYY");
   const moodLogDay = dayjs(userMood.date).format("DD");
   const moodLogMonth = dayjs(userMood.date).format("MMM");
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -64,7 +69,6 @@ const styles = StyleSheet.create({
     color: "#464646",
     marginTop: 20,
   },
-
   buttonContainer: {
     position: "absolute",
     bottom: 20,

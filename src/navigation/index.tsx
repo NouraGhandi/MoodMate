@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "../screens/home";
 import Inspiration from "../screens/inspiration";
-import AnalysisIcon from "../icons/analysisIcon";
+import InspirationsIcon from "../icons/inspirationsIcon";
 import HomeIcon from "../icons/homeIcon";
 enableScreens();
 const Tab = createBottomTabNavigator();
@@ -43,7 +43,7 @@ export default function BottoomTabs() {
           tabBarLabel: "Inspiration"!,
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <AnalysisIcon color={focused ? "#4C9FC1" : "#C6C6C6"} />
+            <InspirationsIcon color={focused ? "#4C9FC1" : "#C6C6C6"} />
           ),
         }}
       />

@@ -21,7 +21,10 @@ interface AppContextProps {
   userMood: IUserMood;
   setUserMood: (key: keyof IUserMood, value: any) => void;
 }
-const AppContext = createContext<AppContextProps | undefined>(undefined);
+const AppContext = createContext<AppContextProps>({
+  userMood: initialUserMood,
+  setUserMood: () => {},
+});
 
 const AppProvider = ({ children }: Prop) => {
   const [userMood, setUserMood] = useState<IUserMood>(initialUserMood);

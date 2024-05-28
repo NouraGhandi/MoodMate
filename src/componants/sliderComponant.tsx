@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import { useAppContext } from "../context/userContext";
@@ -10,13 +10,9 @@ interface ImageItem {
 }
 
 const images: ImageItem[] = [
-  { id: 1, source: require("../../assets/images/happy.png"), mood: "Happy" },
-  {
-    id: 2,
-    source: require("../../assets/images/awesome.png"),
-    mood: "Awesom",
-  },
-  { id: 3, source: require("../../assets/images/good.png"), mood: "Good" },
+  { id: 1, source: require("../../assets/images/good.png"), mood: "Good" },
+  { id: 2, source: require("../../assets/images/awesome.png"), mood: "Awesom" },
+  { id: 3, source: require("../../assets/images/happy.png"), mood: "Happy" },
   { id: 4, source: require("../../assets/images/bad.png"), mood: "Bad" },
   { id: 5, source: require("../../assets/images/awful.png"), mood: "Awful" },
 ];
@@ -26,15 +22,19 @@ const { width: viewportWidth } = Dimensions.get("window");
 function ImageSwiper() {
   const { setUserMood, userMood } = useAppContext();
 
-  const swiperRef = useRef(null);
+  const swiperRef = useRef<SwiperFlatList>(null);
 
-  const handleEmotionPress = (index: number) => {
+  const handleChangeIndex = (index: number) => {
     if (swiperRef.current) {
       swiperRef.current.scrollToIndex({ index });
       setUserMood("mood", images[index].mood);
       setUserMood("source", images[index].source);
     }
   };
+  useEffect(() => {
+    setUserMood("mood", images[0].mood);
+    setUserMood("source", images[0].source);
+  }, []);
   return (
     <View style={styles.container}>
       <SwiperFlatList
@@ -45,7 +45,7 @@ function ImageSwiper() {
         paginationStyle={styles.pagination}
         paginationActiveColor="#464646"
         paginationDefaultColor="#B4B4B4"
-        onChangeIndex={({ index }) => handleEmotionPress(index)}
+        onChangeIndex={({ index }) => handleChangeIndex(index)}
         data={images}
         renderItem={({ item }) => {
           return (

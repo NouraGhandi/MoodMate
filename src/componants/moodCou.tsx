@@ -38,15 +38,6 @@ const MoodCard = ({
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    //   height: 150,
-    //   width: "48%",
-    //   backgroundColor: "#FFFFFF",
-    //   borderRadius: 20,
-    //   alignItems: "center",
-    //   justifyContent: "center",
-    //   alignContent: "center",
-  },
   card: {
     flexDirection: "row",
     height: 72,
@@ -64,11 +55,13 @@ const styles = StyleSheet.create({
   cardDateText: {
     fontSize: 14,
     fontWeight: "700",
+    color: "#464646",
   },
   cardDivider: {
     height: 34,
-    borderWidth: 1,
+    width: 2,
     marginRight: 10,
+    backgroundColor: "#464646",
   },
   cardContent: {
     justifyContent: "center",
@@ -77,6 +70,7 @@ const styles = StyleSheet.create({
   cardContentText: {
     fontSize: 14,
     fontWeight: "700",
+    color: "#464646",
   },
   cardImageContainer: {
     alignItems: "center",

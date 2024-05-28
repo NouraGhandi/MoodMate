@@ -27,7 +27,7 @@ export default function App() {
           <Stack.Screen
             name="LogMood"
             component={LogMood}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, gestureEnabled: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>

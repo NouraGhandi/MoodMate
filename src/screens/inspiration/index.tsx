@@ -1,15 +1,39 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View, Alert } from "react-native";
 import VideoIcon from "../../icons/videoIcon";
 import QuoteIcon from "../../icons/quoteIcon";
 import MusicIcon from "../../icons/musicIcon";
 import BookIcon from "../../icons/bookIcon";
 import InspirationCard from "../../componants/inspirationComponant";
+import { useAppContext } from "../../context/userContext";
 
 export default function Inspiration() {
+  const { userMood } = useAppContext();
+  const [backgroundColor, setBackgroundColor] = useState<string>("ffffff");
+  function getRandomHexColor() {
+    return Math.floor(Math.random() * 0xffffff)
+      .toString(16)
+      .padStart(6, "0");
+  }
+  const fetchColor = async () => {
+    const randomHexColor = getRandomHexColor();
+    try {
+      // Fetch a random color from TheColorAPI
+      const response = await fetch(
+        `https://www.thecolorapi.com/id?hex=${randomHexColor}`
+      );
+      const data = await response.json();
+      setBackgroundColor(data.hex.value);
+    } catch (error) {
+      console.error("Error fetching color:", error);
+    }
+  };
+  useEffect(() => {
+    fetchColor(); // Fetch initial color on mount
+  }, [userMood.mood]);
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor }]}>
       <StatusBar style="auto" />
       <View style={styles.content}>
         <Text style={styles.headerText}>Inspirations... </Text>
@@ -50,11 +74,10 @@ export default function Inspiration() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9F9FB",
+    opacity: 0.5,
   },
   content: {
     flex: 1,
-    // width: "100%",
     padding: 20,
   },
   headerText: {
@@ -64,17 +87,6 @@ const styles = StyleSheet.create({
     marginTop: 35,
     color: "#464646",
   },
-
-  // buttonContainer: {
-  //   position: "absolute",
-  //   bottom: 20,
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   width: "auto",
-  //   height: "auto",
-  //   borderRadius: 20,
-  //   backgroundColor: "#4C9FC1",
-  // },
 
   inspirationContainer: {
     flexDirection: "row",
