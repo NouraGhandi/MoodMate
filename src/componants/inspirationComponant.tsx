@@ -5,8 +5,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import MusicIcon from "../icons/musicIcon";
-const Inspiration = ({
+
+const InspirationCard = ({
   icon,
   onPress,
 }: {
@@ -21,8 +21,8 @@ const Inspiration = ({
 };
 const styles = StyleSheet.create({
   container: {
-    height: 70,
-    width: 70,
+    height: 150,
+    width: "48%",
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     alignItems: "center",
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
 });
-export default Inspiration;
+export default InspirationCard;

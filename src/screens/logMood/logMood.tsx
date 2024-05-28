@@ -9,9 +9,10 @@ import {
   TouchableOpacity,
   Button,
 } from "react-native";
-import ImageSwiper from "../../componants/slider";
+import ImageSwiper from "../../componants/sliderComponant";
+import { useAppContext } from "../../context/userContext";
 
-export default function Analysis() {
+export default function LogMood() {
   const emotions: string[] = [
     "Happy",
     "Tired",
@@ -22,10 +23,11 @@ export default function Analysis() {
     "Unsure",
   ];
 
+  const { setUserMood, userMood } = useAppContext();
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
-  const;
   const handleEmotionPress = (emotion: string) => {
     setSelectedEmotion(emotion);
+    setUserMood("emotion", emotion);
   };
 
   return (
@@ -56,8 +58,15 @@ export default function Analysis() {
             ))}
           </ScrollView>
         </View>
+        <View style={{ flexDirection: "column" }}></View>
         <View style={styles.buttonContainer}>
-          <Button title="Save" color="#fff" onPress={() => {}} />
+          <Button
+            title="Save"
+            color="#fff"
+            onPress={() => {
+              console.log("final", userMood);
+            }}
+          />
         </View>
       </View>
     </SafeAreaView>

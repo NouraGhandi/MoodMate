@@ -25,9 +25,13 @@ const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 const AppProvider = ({ children }: Prop) => {
   const [userMood, setUserMood] = useState<IUserMood>(initialUserMood);
-
+  const updateContext = (key: any, value: any) => {
+    setUserMood({ ...userMood, [key]: value });
+  };
   return (
-    <AppContext.Provider value={{ userMood, setUserMood }}>
+    <AppContext.Provider
+      value={{ userMood: userMood, setUserMood: updateContext }}
+    >
       {children}
     </AppContext.Provider>
   );

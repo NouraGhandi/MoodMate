@@ -8,65 +8,35 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import Inspiration from "../../componants/inspirationComponant";
-import MusicIcon from "../../icons/musicIcon";
-import VideoIcon from "../../icons/videoIcon";
-import BookIcon from "../../icons/bookIcon";
-import QuoteIcon from "../../icons/quoteIcon";
+import { useNavigation } from "@react-navigation/native";
+import { useAppContext } from "../../context/userContext";
+import MoodCard from "../../componants/moodCou";
 
 export default function Home() {
-  const data = [
-    { icon: <MusicIcon />, id: 1 },
-    { icon: <VideoIcon />, id: 2 },
-    { icon: <BookIcon />, id: 3 },
-    { icon: <QuoteIcon />, id: 4 },
-  ];
-
+  const { navigate } = useNavigation();
   const date = new Date();
   const year = date.getFullYear();
   const month = date.toLocaleString("en-US", {
     month: "long",
     calendar: "gregory",
   });
-
+  const { userMood } = useAppContext();
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
-
-      <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.headerText}>Inspirations... </Text>
-        <View style={styles.inspirationContainer}>
-          {data.map((item) => (
-            <Inspiration key={item.id} icon={item.icon} />
-          ))}
-        </View>
-
-        <View style={styles.dateContainer}>
-          <Text style={styles.dateText}>{month + " "}</Text>
-          <Text style={styles.dateText}>{year}</Text>
-        </View>
-
-        <View style={styles.card}>
-          <View style={styles.cardDate}>
-            <Text style={styles.cardDateText}>1</Text>
-            <Text style={styles.cardDateText}>May</Text>
-          </View>
-          <View style={styles.cardDivider}></View>
-          <View style={styles.cardContent}>
-            <Text style={styles.cardContentText}>AWESOME</Text>
-            <Text style={styles.cardContentText}>confidence, Powerful</Text>
-          </View>
-          <View style={styles.cardImageContainer}>
-            <Image
-              source={require("../../../assets/images/bad.png")}
-              style={styles.image}
-            />
-          </View>
-        </View>
+      <View style={styles.dateContainer}>
+        <Text style={styles.dateText}>{month + " "}</Text>
+        <Text style={styles.dateText}>{year}</Text>
+      </View>
+      <ScrollView style={{ padding: 20 }}>
+        <MoodCard day={0} month={""} mood={""} emotion={""} />
       </ScrollView>
-
       <View style={styles.buttonContainer}>
-        <Button title="Log your mood   +" color="#fff" onPress={() => {}} />
+        <Button
+          title="Log your mood   +"
+          color="#fff"
+          onPress={() => navigate("LogMood" as never)}
+        />
       </View>
     </SafeAreaView>
   );
@@ -81,67 +51,18 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 20,
   },
-  headerText: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#464646",
-    marginBottom: 20,
-  },
-  inspirationContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 50,
-  },
   dateContainer: {
     flexDirection: "row",
-
     marginBottom: 20,
+    paddingHorizontal: 20,
   },
   dateText: {
     fontSize: 24,
     fontWeight: "800",
     color: "#464646",
+    marginTop: 20,
   },
-  card: {
-    flexDirection: "row",
-    height: 72,
-    width: "100%",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
-    alignItems: "center",
-    paddingHorizontal: 10,
-  },
-  cardDate: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "25%",
-  },
-  cardDateText: {
-    fontSize: 14,
-    fontWeight: "700",
-  },
-  cardDivider: {
-    height: 34,
-    borderWidth: 1,
-    marginRight: 10,
-  },
-  cardContent: {
-    justifyContent: "center",
-    width: "50%",
-  },
-  cardContentText: {
-    fontSize: 14,
-    fontWeight: "700",
-  },
-  cardImageContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "25%",
-  },
-  image: {
-    width: 50,
-    height: 50,
-  },
+
   buttonContainer: {
     position: "absolute",
     bottom: 20,

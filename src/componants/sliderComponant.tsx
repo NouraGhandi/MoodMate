@@ -1,22 +1,14 @@
-import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Dimensions,
-  ImageSourcePropType,
-} from "react-native";
+import React, { useCallback, useRef, useState } from "react";
+import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 import SwiperFlatList from "react-native-swiper-flatlist";
+import { useAppContext } from "../context/userContext";
 
-// Define an interface for your images
 interface ImageItem {
   id: number;
-  source: string; // Use 'any' because 'require' returns a number
+  source: string;
   mood: string;
 }
 
-// Create an array of images using require
 const images: ImageItem[] = [
   { id: 1, source: require("../../assets/images/happy.png"), mood: "Happy" },
   {
@@ -32,26 +24,43 @@ const images: ImageItem[] = [
 const { width: viewportWidth } = Dimensions.get("window");
 
 function ImageSwiper() {
+  const { setUserMood, userMood } = useAppContext();
+
+  const swiperRef = useRef(null);
+
+  const handleEmotionPress = (index: number) => {
+    if (swiperRef.current) {
+      swiperRef.current.scrollToIndex({ index });
+      setUserMood({ mood: images[index].mood, source: images[index].source });
+      console.log("yes", index);
+      console.log(userMood);
+    }
+    setUserMood({ mood: images[index].mood, source: images[index].source });
+  };
   return (
     <View style={styles.container}>
       <SwiperFlatList
+        ref={swiperRef}
         index={0}
         showPagination
         paginationStyleItem={styles.paginationItem}
         paginationStyle={styles.pagination}
         paginationActiveColor="#464646"
         paginationDefaultColor="#B4B4B4"
+        onChangeIndex={({ index }) => handleEmotionPress(index)}
         data={images}
-        renderItem={({ item }) => (
-          <View style={styles.child}>
-            <View>
-              <Image source={item.source} style={styles.image} />
+        renderItem={({ item }) => {
+          return (
+            <View style={styles.child}>
+              <View>
+                <Image source={item.source} style={styles.image} />
+              </View>
+              <Text style={{ fontSize: 18, fontWeight: 700, color: "#464646" }}>
+                {item.mood}
+              </Text>
             </View>
-            <Text style={{ fontSize: 18, fontWeight: 700, color: "#464646" }}>
-              {item.mood}
-            </Text>
-          </View>
-        )}
+          );
+        }}
       />
     </View>
   );
