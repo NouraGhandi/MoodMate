@@ -11,10 +11,10 @@ const InspirationCard = ({
   onPress,
 }: {
   icon: React.ReactNode;
-  onPress?: React.ReactNode;
+  onPress?: any;
 }) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => onPress}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       {icon}
     </TouchableOpacity>
   );

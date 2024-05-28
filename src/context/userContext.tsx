@@ -19,14 +19,14 @@ const initialUserMood: IUserMood = {
 };
 interface AppContextProps {
   userMood: IUserMood;
-  setUserMood: (mood: IUserMood) => void;
+  setUserMood: (key: keyof IUserMood, value: any) => void;
 }
 const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 const AppProvider = ({ children }: Prop) => {
   const [userMood, setUserMood] = useState<IUserMood>(initialUserMood);
-  const updateContext = (key: any, value: any) => {
-    setUserMood({ ...userMood, [key]: value });
+  const updateContext = (key: keyof IUserMood, value: any) => {
+    setUserMood((currentMood) => ({ ...currentMood, [key]: value }));
   };
   return (
     <AppContext.Provider

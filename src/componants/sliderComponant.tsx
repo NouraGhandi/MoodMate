@@ -31,11 +31,9 @@ function ImageSwiper() {
   const handleEmotionPress = (index: number) => {
     if (swiperRef.current) {
       swiperRef.current.scrollToIndex({ index });
-      setUserMood({ mood: images[index].mood, source: images[index].source });
-      console.log("yes", index);
-      console.log(userMood);
+      setUserMood("mood", images[index].mood);
+      setUserMood("source", images[index].source);
     }
-    setUserMood({ mood: images[index].mood, source: images[index].source });
   };
   return (
     <View style={styles.container}>

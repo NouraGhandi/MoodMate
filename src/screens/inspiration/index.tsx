@@ -1,15 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Button,
-} from "react-native";
-import ImageSwiper from "../../componants/sliderComponant";
+import { SafeAreaView, StyleSheet, Text, View, Alert } from "react-native";
 import VideoIcon from "../../icons/videoIcon";
 import QuoteIcon from "../../icons/quoteIcon";
 import MusicIcon from "../../icons/musicIcon";
@@ -23,12 +14,33 @@ export default function Inspiration() {
       <View style={styles.content}>
         <Text style={styles.headerText}>Inspirations... </Text>
         <View style={styles.inspirationContainer}>
-          <InspirationCard icon={<MusicIcon />} />
-          <InspirationCard icon={<VideoIcon />} />
+          <InspirationCard
+            icon={<MusicIcon />}
+            onPress={() => Alert.alert("Listen", "Unstoppable - Sia")}
+          />
+          <InspirationCard
+            icon={<VideoIcon />}
+            onPress={() =>
+              Alert.alert("Watch", "Change the way you think - Muniba Mazari")
+            }
+          />
         </View>
         <View style={styles.inspirationContainer}>
-          <InspirationCard icon={<BookIcon />} />
-          <InspirationCard icon={<QuoteIcon />} />
+          <InspirationCard
+            icon={<BookIcon />}
+            onPress={() =>
+              Alert.alert("Read", "Big Magic by Elizabeth Gilbert")
+            }
+          />
+          <InspirationCard
+            icon={<QuoteIcon />}
+            onPress={() =>
+              Alert.alert(
+                "Quote",
+                "Be thankful for closed doors, bad vibes, and stuff that falls apart. It’ll protect you from things not meant for you"
+              )
+            }
+          />
         </View>
       </View>
     </SafeAreaView>

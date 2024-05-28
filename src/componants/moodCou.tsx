@@ -14,7 +14,7 @@ const MoodCard = ({
   emotion,
   source,
 }: {
-  day: number;
+  day: string;
   month: string;
   mood: string;
   emotion: string;
@@ -32,7 +32,7 @@ const MoodCard = ({
         <Text style={styles.cardContentText}>{emotion}</Text>
       </View>
       <View style={styles.cardImageContainer}>
-        {/* <Image source={require(`${source}`)} style={styles.image} /> */}
+        <Image source={source} style={styles.image} />
       </View>
     </View>
   );

@@ -11,25 +11,27 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useAppContext } from "../../context/userContext";
 import MoodCard from "../../componants/moodCou";
-
+import dayjs from "dayjs";
 export default function Home() {
   const { navigate } = useNavigation();
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.toLocaleString("en-US", {
-    month: "long",
-    calendar: "gregory",
-  });
+  const date = dayjs(new Date()).format("MMM YYYY");
   const { userMood } = useAppContext();
+  const moodLogDay = dayjs(userMood.date).format("DD");
+  const moodLogMonth = dayjs(userMood.date).format("MMM");
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.dateContainer}>
-        <Text style={styles.dateText}>{month + " "}</Text>
-        <Text style={styles.dateText}>{year}</Text>
+        <Text style={styles.dateText}>{date}</Text>
       </View>
       <ScrollView style={{ padding: 20 }}>
-        <MoodCard day={0} month={""} mood={""} emotion={""} />
+        <MoodCard
+          day={moodLogDay}
+          month={moodLogMonth}
+          mood={userMood.mood}
+          emotion={userMood.emotion}
+          source={userMood.source}
+        />
       </ScrollView>
       <View style={styles.buttonContainer}>
         <Button
