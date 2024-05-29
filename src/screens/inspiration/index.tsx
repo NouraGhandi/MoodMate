@@ -10,30 +10,9 @@ import { useAppContext } from "../../context/userContext";
 
 export default function Inspiration() {
   const { userMood } = useAppContext();
-  const [backgroundColor, setBackgroundColor] = useState<string>("ffffff");
-  function getRandomHexColor() {
-    return Math.floor(Math.random() * 0xffffff)
-      .toString(16)
-      .padStart(6, "0");
-  }
-  const fetchColor = async () => {
-    const randomHexColor = getRandomHexColor();
-    try {
-      // Fetch a random color from TheColorAPI
-      const response = await fetch(
-        `https://www.thecolorapi.com/id?hex=${randomHexColor}`
-      );
-      const data = await response.json();
-      setBackgroundColor(data.hex.value);
-    } catch (error) {
-      console.error("Error fetching color:", error);
-    }
-  };
-  useEffect(() => {
-    fetchColor(); // Fetch initial color on mount
-  }, [userMood.mood]);
+
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor }]}>
+    <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.content}>
         <Text style={styles.headerText}>Inspirations... </Text>

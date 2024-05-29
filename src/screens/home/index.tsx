@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useAppContext } from "../../context/userContext";
 import MoodCard from "../../componants/moodCou";
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 export default function Home() {
   const { userMood } = useAppContext();
   const { navigate } = useNavigation();
@@ -22,14 +22,34 @@ export default function Home() {
   const date = dayjs(new Date()).format("MMM YYYY");
   const moodLogDay = dayjs(userMood.date).format("DD");
   const moodLogMonth = dayjs(userMood.date).format("MMM");
-
+  const [backgroundColor, setBackgroundColor] = useState<string>("#ffffff");
+  function getRandomHexColor() {
+    return Math.floor(Math.random() * 0xffffff)
+      .toString(16)
+      .padStart(6, "0");
+  }
+  const fetchColor = async () => {
+    const randomHexColor = getRandomHexColor();
+    try {
+      const response = await fetch(
+        `https://www.thecolorapi.com/id?hex=${randomHexColor}`
+      );
+      const data = await response.json();
+      setBackgroundColor(data.hex.value);
+    } catch (error) {
+      console.error("Error fetching color:", error);
+    }
+  };
+  useEffect(() => {
+    fetchColor();
+  }, [userMood.mood]);
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.dateContainer}>
         <Text style={styles.dateText}>{date}</Text>
       </View>
-      <ScrollView style={{ padding: 20 }}>
+      <ScrollView style={{ padding: 20, backgroundColor }}>
         <MoodCard
           day={moodLogDay}
           month={moodLogMonth}
@@ -52,7 +72,6 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9F9FB",
   },
   content: {
     flexGrow: 1,

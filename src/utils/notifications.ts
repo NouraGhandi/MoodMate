@@ -1,35 +1,84 @@
-// src/notifications.ts
+import React, { useEffect, useState, useRef } from "react";
+import { Text, View, Button, Platform } from "react-native";
 import * as Notifications from "expo-notifications";
-import Constants from "expo-constants";
-import { Alert } from "react-native";
 
-export async function registerForPushNotificationsAsync(): Promise<
-  string | undefined
-> {
-  if (!Constants.isDevice) {
-    Alert.alert(
-      "Device Required",
-      "Must use physical device for Push Notifications"
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
+export default function PushNotifications() {
+  const [expoPushToken, setExpoPushToken] = useState<string | undefined>("");
+  const notificationListener = useRef<any>();
+  const responseListener = useRef<any>();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
     );
-    return undefined;
-  }
+    // schedulePushNotification();
+    scheduleDailyNotifications();
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        console.log(notification);
+      });
 
-  const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  let finalStatus = existingStatus;
-  if (existingStatus !== "granted") {
-    const { status } = await Notifications.requestPermissionsAsync();
-    finalStatus = status;
-  }
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
 
-  if (finalStatus !== "granted") {
-    Alert.alert(
-      "Permission Required",
-      "Failed to get push token for push notification!"
-    );
-    return undefined;
-  }
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+}
 
-  const token = (await Notifications.getExpoPushTokenAsync()).data;
-  console.log(token);
+async function scheduleDailyNotifications() {
+  const morningTrigger = {
+    hour: 10,
+    minute: 0,
+    repeats: true,
+  };
+
+  const eveningTrigger = {
+    hour: 20,
+    minute: 0,
+    repeats: true,
+  };
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Good Morning!",
+      body: "Log your Mood",
+      data: { data: "morning" },
+    },
+    trigger: morningTrigger,
+  });
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Good Evening!",
+      body: "Log your Mood",
+      data: { data: "evening" },
+    },
+    trigger: eveningTrigger,
+  });
+}
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Platform.OS === "android") {
+    await Notifications.requestPermissionsAsync();
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  }
   return token;
 }
