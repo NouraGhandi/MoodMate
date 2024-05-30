@@ -1,13 +1,11 @@
 import { enableScreens } from "react-native-screens";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
 import Home from "../screens/home";
 import Inspiration from "../screens/inspiration";
-import InspirationsIcon from "../icons/inspirationsIcon";
-import HomeIcon from "../icons/homeIcon";
+import HomeIcon from "../icons/HomeIcon";
+import InspirationsIcon from "../icons/InspirationsIcon";
 enableScreens();
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 
 export default function BottoomTabs() {
   return (

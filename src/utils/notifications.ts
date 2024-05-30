@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Text, View, Button, Platform } from "react-native";
+import { useEffect, useState, useRef } from "react";
+import { Platform } from "react-native";
 import * as Notifications from "expo-notifications";
 
 Notifications.setNotificationHandler({
@@ -50,8 +50,8 @@ async function scheduleDailyNotifications() {
   };
 
   const eveningTrigger = {
-    hour: 20,
-    minute: 0,
+    hour: 22,
+    minute: 14,
     repeats: true,
   };
 

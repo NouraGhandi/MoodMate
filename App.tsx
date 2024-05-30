@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import BottoomTabs from "./src/navigation";
-import { AppProvider } from "./src/context/userContext";
+import { AppProvider } from "./src/context/appContext";
 import { createStackNavigator } from "@react-navigation/stack";
-import LogMood from "./src/screens/logMood/logMood";
+import LogMood from "./src/screens/log-mood";
 import PushNotifications from "./src/utils/notifications";
 
 export default function App() {
-  const expoPushToken = PushNotifications();
+  PushNotifications();
   const Stack = createStackNavigator();
   return (
-    <AppProvider>
-      <NavigationContainer>
+    <NavigationContainer>
+      <AppProvider>
         <Stack.Navigator>
           <Stack.Screen
             name="Main"
@@ -24,7 +24,7 @@ export default function App() {
             options={{ headerShown: false, gestureEnabled: false }}
           />
         </Stack.Navigator>
-      </NavigationContainer>
-    </AppProvider>
+      </AppProvider>
+    </NavigationContainer>
   );
 }

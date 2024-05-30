@@ -1,16 +1,13 @@
+import React from "react";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View, Alert } from "react-native";
-import VideoIcon from "../../icons/videoIcon";
-import QuoteIcon from "../../icons/quoteIcon";
-import MusicIcon from "../../icons/musicIcon";
-import BookIcon from "../../icons/bookIcon";
-import InspirationCard from "../../componants/inspirationComponant";
-import { useAppContext } from "../../context/userContext";
+import VideoIcon from "../../icons/VideoIcon";
+import QuoteIcon from "../../icons/QuoteIcon";
+import MusicIcon from "../../icons/MusicIcon";
+import BookIcon from "../../icons/BookIcon";
+import InspirationCard from "../../components/InspirationCard";
 
 export default function Inspiration() {
-  const { userMood } = useAppContext();
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />

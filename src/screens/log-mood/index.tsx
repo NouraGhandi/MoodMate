@@ -1,5 +1,5 @@
+import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,12 +9,15 @@ import {
   TouchableOpacity,
   Button,
 } from "react-native";
-import ImageSwiper from "../../componants/sliderComponant";
-import { useAppContext } from "../../context/userContext";
-import { useNavigation } from "@react-navigation/native";
+import ImageSwiper from "../../components/ImageSwiper";
+import { useAppContext } from "../../context/appContext";
 
 export default function LogMood() {
-  const emotions: string[] = [
+  const { setMood, mood, reset, submitToList } = useAppContext();
+  useEffect(() => {
+    reset();
+  }, []);
+  const feelings: string[] = [
     "Happy",
     "Tired",
     "Bored",
@@ -24,13 +27,10 @@ export default function LogMood() {
     "Unsure",
   ];
 
-  const { setUserMood, userMood } = useAppContext();
-  const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
-  const handleEmotionPress = (emotion: string) => {
-    setSelectedEmotion(emotion);
-    setUserMood("emotion", emotion);
+  const handlefeelingPress = (feeling: string) => {
+    setMood("feeling", feeling);
   };
-  const { navigate } = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -45,27 +45,24 @@ export default function LogMood() {
             horizontal
             contentContainerStyle={styles.scrollViewContent}
           >
-            {emotions.map((emotion, index) => (
+            {feelings.map((feeling, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={() => handleEmotionPress(emotion)}
+                onPress={() => handlefeelingPress(feeling)}
                 style={[
-                  styles.emotionButton,
-                  selectedEmotion === emotion && styles.selectedEmotionButton,
+                  styles.feelingButton,
+                  mood.feeling === feeling && styles.selectedfeelingButton,
                 ]}
               >
-                <Text style={styles.emotionText}>{emotion}</Text>
+                <Text style={styles.feelingText}>{feeling}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
         <View style={{ flexDirection: "column" }}></View>
+
         <View style={styles.buttonContainer}>
-          <Button
-            title="Save"
-            color="#fff"
-            onPress={() => navigate("Home" as never)}
-          />
+          <Button title="Save" color="#fff" onPress={submitToList} />
         </View>
       </View>
     </SafeAreaView>
@@ -103,7 +100,7 @@ const styles = StyleSheet.create({
     width: "auto",
     marginTop: 20,
   },
-  emotionButton: {
+  feelingButton: {
     width: 80,
     height: 31,
     backgroundColor: "#fff",
@@ -114,10 +111,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  selectedEmotionButton: {
+  selectedfeelingButton: {
     backgroundColor: "#4C9FC1",
   },
-  emotionText: {
+  feelingText: {
     color: "#000",
   },
   buttonContainer: {

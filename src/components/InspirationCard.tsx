@@ -1,9 +1,7 @@
 import {
-  SafeAreaView,
+  GestureResponderEvent,
   StyleSheet,
-  Text,
   TouchableOpacity,
-  View,
 } from "react-native";
 
 const InspirationCard = ({
@@ -11,7 +9,7 @@ const InspirationCard = ({
   onPress,
 }: {
   icon: React.ReactNode;
-  onPress?: any;
+  onPress: (event: GestureResponderEvent) => void;
 }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>

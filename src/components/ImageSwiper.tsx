@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 import SwiperFlatList from "react-native-swiper-flatlist";
-import { useAppContext } from "../context/userContext";
+import { useAppContext } from "../context/appContext";
 
 interface ImageItem {
   id: number;
@@ -20,23 +20,18 @@ const images: ImageItem[] = [
 const { width: viewportWidth } = Dimensions.get("window");
 
 function ImageSwiper() {
-  const { setUserMood, userMood } = useAppContext();
-
+  const { setMood } = useAppContext();
   const swiperRef = useRef<SwiperFlatList>(null);
-
   const handleChangeIndex = (index: number) => {
     if (swiperRef.current) {
       swiperRef.current.scrollToIndex({ index });
-      setUserMood("mood", images[index].mood);
-      setUserMood("source", images[index].source);
+      setMood("mood", images[index].mood);
+      setMood("source", images[index].source);
     }
   };
-  useEffect(() => {
-    setUserMood("mood", images[0].mood);
-    setUserMood("source", images[0].source);
-  }, []);
+
   return (
-    <View style={styles.container}>
+    <View style={styles.SwipperContainer}>
       <SwiperFlatList
         ref={swiperRef}
         index={0}
@@ -65,7 +60,7 @@ function ImageSwiper() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  SwipperContainer: {
     flex: 1,
     backgroundColor: "#F9F9FB",
   },

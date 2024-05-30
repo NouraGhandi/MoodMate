@@ -1,28 +1,34 @@
-import { StatusBar } from "expo-status-bar";
+import React, { StatusBar } from "expo-status-bar";
 import {
   Button,
   SafeAreaView,
   StyleSheet,
   Text,
   View,
-  Image,
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useAppContext } from "../../context/userContext";
-import MoodCard from "../../componants/moodCou";
+import { useAppContext } from "../../context/appContext";
+import MoodCard from "../../components/MoodCard";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+
 export default function Home() {
-  const { userMood } = useAppContext();
+  const { mood, moodList } = useAppContext();
   const { navigate } = useNavigation();
+
   useEffect(() => {
-    navigate("LogMood" as never);
-  }, [userMood.mood == ""]);
+    if (mood.feeling === "") {
+      navigate("LogMood" as never);
+    }
+  }, []);
+  useEffect(() => {
+    fetchColor();
+  }, [mood.mood]);
   const date = dayjs(new Date()).format("MMM YYYY");
-  const moodLogDay = dayjs(userMood.date).format("DD");
-  const moodLogMonth = dayjs(userMood.date).format("MMM");
+
   const [backgroundColor, setBackgroundColor] = useState<string>("#ffffff");
+
   function getRandomHexColor() {
     return Math.floor(Math.random() * 0xffffff)
       .toString(16)
@@ -40,9 +46,10 @@ export default function Home() {
       console.error("Error fetching color:", error);
     }
   };
-  useEffect(() => {
-    fetchColor();
-  }, [userMood.mood]);
+  const sortedMoodList = moodList
+    .sort((a, b) => a.date.getTime() - b.date.getTime())
+    .reverse();
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -50,13 +57,21 @@ export default function Home() {
         <Text style={styles.dateText}>{date}</Text>
       </View>
       <ScrollView style={{ padding: 20, backgroundColor }}>
-        <MoodCard
-          day={moodLogDay}
-          month={moodLogMonth}
-          mood={userMood.mood}
-          emotion={userMood.emotion}
-          source={userMood.source}
-        />
+        {sortedMoodList.map((mood, index) => {
+          const day = dayjs(mood.date).format("DD");
+          const month = dayjs(mood.date).format("MMM");
+
+          return (
+            <MoodCard
+              key={index}
+              day={day}
+              month={month}
+              mood={mood.mood}
+              feeling={mood.feeling}
+              source={mood.source}
+            />
+          );
+        })}
       </ScrollView>
       <View style={styles.buttonContainer}>
         <Button
